@@ -1471,7 +1471,7 @@ class product_product(models.Model):
         try:
             if (float(rjson['price'])>=0.0):
                 product._meli_set_product_price( product_template, rjson['price'] )
-        except:
+        except Exception as e:
             _logger.info(e, exc_info=True)
             rjson['price'] = 0.0
 
