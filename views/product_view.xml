@@ -96,8 +96,24 @@
             <data>
                 <notebook>
                     <page string="MercadoLibre Plantilla">
-                      <group name="ML actions">
+
                         <div class="oe_button_box" name="button_box_mel" style="width: auto;">
+                          <button type="object"
+                              name="action_meli_pause"
+                              attrs="{'invisible':[('meli_variants_status', '!=', 'active')] }"
+                              confirm="Esta seguro de Pausar este Producto en Mercado Libre, esto bloqueara las publicaciones?"
+                              class="oe_stat_button">
+                              <img src="/meli_oerp/static/src/img/logo_ML.png" width="48" alt="logo ml"/>
+                              <span>Pausar en ML</span>
+                          </button>
+                          <button type="object"
+                              name="action_meli_activate"
+                              attrs="{'invisible':[('meli_variants_status', '!=', 'paused')]}"
+                              confirm="Esta seguro de Pausar este Producto en Mercado Libre, esto activara las publicaciones?"
+                              class="oe_stat_button">
+                              <img src="/meli_oerp/static/src/img/logo_ML.png" width="48"  alt="logo ml"/>
+                              <span>Activar</span>
+                          </button>
                           <button name='%(action_product_template_post)d' type="action"
                             string="Publicar"
                             title="Publicar/Actualizar en ML"
@@ -116,7 +132,7 @@
                             class="oe_stat_button"
                             icon="fa-refresh"/>
                         </div>
-                      </group>
+                      <group name="ML actions"></group>                      
                       <separator string="Variants" colspan="1"/>
                       <field name="product_variant_ids" options="{'no_create': True}" domain="[('meli_id','!=',None)]">
                         <tree>
@@ -125,6 +141,7 @@
                           <field string="Id Pub" name="meli_id"/>
                           <field string="Id Var" name="meli_id_variation"/>
                           <field string="Sku" name="default_code"/>
+                          <field string="Barcode" name="barcode"/>
                           <field string="Status" name="meli_status"/>
                           <field string="Sub Status" name="meli_sub_status"/>
                           <field string="ML Title" name="meli_title"/>
@@ -145,6 +162,8 @@
                         <!--<field name="meli_attributes" />-->
                         <field name="meli_brand"/>
                         <field name="meli_model"/>
+                        <field name="meli_gender"/>
+                        <field name="meli_grid_chart_id"/>
                       </group>
                       <separator string="Condiciones de venta" colspan="1"/>
                       <group name="ML buying conditions">
@@ -198,6 +217,7 @@
                         <button type="object"
                             name="action_meli_pause"
                             attrs="{'invisible':[('meli_variants_status', '!=', 'active')] }"
+                            confirm="Esta seguro de Pausar este Producto en Mercado Libre, esto bloqueara las publicaciones?"
                             class="oe_stat_button">
                             <img src="/meli_oerp/static/src/img/logo_ML.png" width="48" alt="logo ml"/>
                             <span>Pausar en ML</span>
@@ -205,6 +225,7 @@
                         <button type="object"
                             name="action_meli_activate"
                             attrs="{'invisible':[('meli_variants_status', '!=', 'paused')]}"
+                            confirm="Esta seguro de Pausar este Producto en Mercado Libre, esto activara las publicaciones?"
                             class="oe_stat_button">
                             <img src="/meli_oerp/static/src/img/logo_ML.png" width="48"  alt="logo ml"/>
                             <span>Activar</span>
@@ -249,16 +270,16 @@
             <field name="inherit_id" ref="product.product_product_tree_view"/>
             <field name="arch" type="xml">
                 <field name="default_code" position="before">
-                    <field name="meli_pub"/>
-                    <field name="meli_id" invisible="0"/>
-                    <field name="meli_id_variation" invisible="0"/>
-                    <field name="meli_status" invisible="0"/>
-                    <field name="meli_sub_status" invisible="0"/>
-                    <field name="meli_stock_error" invisible="0"/>
-                    <field name="meli_permalink_edit" invisible="0"/>
-                    <field name="meli_stock_update"/>
-                    <field name="meli_stock_error"/>
-                    <field name="meli_available_quantity"/>
+                  <field name="meli_pub"/>
+                      <!--field name="meli_id" invisible="0"/-->
+                      <!--field name="meli_id_variation" invisible="0"/-->
+                      <!--field name="meli_status" invisible="0"/-->
+                      <!--field name="meli_sub_status" invisible="0"/-->
+                      <!--field name="meli_stock_error" invisible="0"/-->
+                      <!--field name="meli_permalink_edit" invisible="0"/-->
+                      <!--field name="meli_stock_update"/-->
+                      <!--field name="meli_stock_error"/-->
+                      <!--field name="meli_available_quantity"/-->
                 </field>
             </field>
         </record>
@@ -372,7 +393,7 @@
                               attrs="{'invisible':['|',('meli_state','=',True),('meli_id','=',False)]}"
                               class="oe_stat_button"
                               icon="fa-pause-circle"
-              								confirm="Esta seguro de Pausar este Producto en Mercado Libre?"/>
+              		      confirm="Esta seguro de Pausar este Producto en Mercado Libre, esto bloqueara la publicacion?"/>
                             <button name='product_meli_status_close' type="object"
                               string="Cerrar"
                               title="Cerrar producto en ML"
@@ -399,7 +420,8 @@
                               title="Se requiere Iniciar Sesión en ML"
                               attrs="{'invisible':[('meli_state','=',False)]}"/>
                           </div>
-                          <group string="Informacion de ML">
+                          <group name="ML actions"></group>
+                          <group name="ML Info" string="Informacion de ML">
                             <group>
                               <field name="meli_post_required" invisible="1" />
                               <field name="meli_status" />
@@ -417,7 +439,7 @@
                           <group string="Detalle de Producto en ML">
               							<group>
                               <field name="meli_title" />
-                              <field name="meli_description_banner_id" on_change="product_on_change_meli_banner( meli_description_banner_id)" />
+                              <!--field name="meli_description_banner_id" on_change="product_on_change_meli_banner( meli_description_banner_id)" /-->
                               <field name="meli_category" options="{'no_create': True}"/>
                               <field name="meli_brand"/>
                               <field name="meli_model"/>
@@ -471,6 +493,7 @@
           <field name="arch" type="xml">
             <field name="name" position="after">
               <field name="meli_default_id_attribute" />
+              <field name="meli_chart_id"/>
             </field>
           </field>
         </record>

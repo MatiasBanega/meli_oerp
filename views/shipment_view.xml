@@ -7,6 +7,7 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
               <tree string="Shipment" default_order="date_created desc">
+                  <field name="company_id"/>
                   <field name="name"/>
                   <field name="shipping_id"/>
                   <field name="status"/>
@@ -62,6 +63,7 @@
                     </div>
                     <group string="Details">
                       <group>
+                        <field name="company_id"/>
                         <field name="date_created"/>
                         <field name="last_updated"/>
                         <field name="order_cost"/>
@@ -360,4 +362,19 @@
                         paperformat="meli_oerp.paperformat_invoice_shipment"
                     /-->
     </data>
+
+    <record id="stock_picking_internal_search_view_meli" model="ir.ui.view">
+        <field name="name">stock.picking.internal.search.meli</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_transfers']" position="after">
+              <separator/>
+              <filter name="meli_publications" string="Ventas ML" domain="[('origin','ilike','ML %')]"/>
+              <separator/>
+            </xpath>
+        </field>
+    </record>
+
+
 </odoo>
